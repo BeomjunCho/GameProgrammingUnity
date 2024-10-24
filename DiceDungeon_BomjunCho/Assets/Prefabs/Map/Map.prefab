@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4247583775165248520
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6186993760559066471}
+  - component: {fileID: 2621917211728188640}
+  m_Layer: 0
+  m_Name: Map
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6186993760559066471
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4247583775165248520}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2621917211728188640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4247583775165248520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9478fa4abe4012846a2bf1210678f2e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startingRoomPrefab: {fileID: 9161348663918268546, guid: 1c6e4f5d0fcde3749a22001cd7bd65a2, type: 3}
+  bossRoomPrefab: {fileID: 5959998381390983490, guid: 48941144120624049b45442fba953821, type: 3}
+  treasureRoomPrefab: {fileID: 5072958636051423396, guid: 435775dd4995a44448a7921e81b1ee8f, type: 3}
+  combatRoomPrefab: {fileID: 4057738595168871724, guid: d2f9634296b8bd443bd2441617b717f8, type: 3}
+  healingRoomPrefab: {fileID: 5356633283362005083, guid: 55aeb57a33b674a4d99ef0cdf465eb53, type: 3}
+  tradeRoomPrefab: {fileID: 2174991245754173635, guid: a41730027c891014995082cbaf920e0f, type: 3}
+  libraryRoomPrefab: {fileID: 522845473158262238, guid: 71ba39262a2ed864b8cfcc0b1df0fc6d, type: 3}
+  currentRoom: {fileID: 0}
+  lastRoom: {fileID: 0}
