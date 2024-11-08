@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6186993760559066471}
-  - component: {fileID: 2621917211728188640}
+  - component: {fileID: -1766124315660263773}
   m_Layer: 0
   m_Name: Map
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2621917211728188640
+--- !u!114 &-1766124315660263773
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -44,12 +44,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9478fa4abe4012846a2bf1210678f2e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingRoomPrefab: {fileID: 9161348663918268546, guid: 1c6e4f5d0fcde3749a22001cd7bd65a2, type: 3}
-  bossRoomPrefab: {fileID: 5959998381390983490, guid: 48941144120624049b45442fba953821, type: 3}
-  treasureRoomPrefab: {fileID: 5072958636051423396, guid: 435775dd4995a44448a7921e81b1ee8f, type: 3}
-  combatRoomPrefab: {fileID: 4057738595168871724, guid: d2f9634296b8bd443bd2441617b717f8, type: 3}
-  healingRoomPrefab: {fileID: 5356633283362005083, guid: 55aeb57a33b674a4d99ef0cdf465eb53, type: 3}
-  tradeRoomPrefab: {fileID: 2174991245754173635, guid: a41730027c891014995082cbaf920e0f, type: 3}
-  libraryRoomPrefab: {fileID: 522845473158262238, guid: 71ba39262a2ed864b8cfcc0b1df0fc6d, type: 3}
-  currentRoom: {fileID: 0}
-  lastRoom: {fileID: 0}
+  RoomPrefabs:
+  - {fileID: 1780121778896855906, guid: 186defa82b35b434ca787b50cea2e246, type: 3}
+  - {fileID: 9071715040847606535, guid: 014d824df1c70454eb2d2e4ac3cee524, type: 3}
+  - {fileID: 6091045816502696729, guid: 1987a155614a39e4a917106e7becd43d, type: 3}
+  - {fileID: 4559355789134656752, guid: cc9f20f30a9404e4da25ab121cf5461d, type: 3}
+  - {fileID: 8302227868832940400, guid: df1f0e40353ac114682509a90bab3fe1, type: 3}
+  StartingRoomPrefab: {fileID: 5021291616962547847, guid: 07bb9fa523eb97543b048eee818e03e6, type: 3}
+  BossRoomPrefab: {fileID: 7925280324066148478, guid: e9e41d33b22b1c8479bcf3c664941404, type: 3}
+  RoomSize: 30

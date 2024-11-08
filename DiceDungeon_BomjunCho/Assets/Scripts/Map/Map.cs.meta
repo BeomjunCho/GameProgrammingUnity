@@ -4,13 +4,13 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - startingRoomPrefab: {fileID: 9161348663918268546, guid: 1c6e4f5d0fcde3749a22001cd7bd65a2, type: 3}
-  - bossRoomPrefab: {fileID: 5959998381390983490, guid: 48941144120624049b45442fba953821, type: 3}
-  - treasureRoomPrefab: {fileID: 5072958636051423396, guid: 435775dd4995a44448a7921e81b1ee8f, type: 3}
-  - combatRoomPrefab: {fileID: 4057738595168871724, guid: d2f9634296b8bd443bd2441617b717f8, type: 3}
-  - healingRoomPrefab: {fileID: 5356633283362005083, guid: 55aeb57a33b674a4d99ef0cdf465eb53, type: 3}
-  - tradeRoomPrefab: {fileID: 2174991245754173635, guid: a41730027c891014995082cbaf920e0f, type: 3}
-  - libraryRoomPrefab: {fileID: 522845473158262238, guid: 71ba39262a2ed864b8cfcc0b1df0fc6d, type: 3}
+  - startingRoomPrefab: {instanceID: 0}
+  - bossRoomPrefab: {instanceID: 0}
+  - treasureRoomPrefab: {instanceID: 0}
+  - combatRoomPrefab: {instanceID: 0}
+  - healingRoomPrefab: {instanceID: 0}
+  - tradeRoomPrefab: {instanceID: 0}
+  - libraryRoomPrefab: {instanceID: 0}
   - currentRoom: {instanceID: 0}
   - lastRoom: {instanceID: 0}
   executionOrder: 0

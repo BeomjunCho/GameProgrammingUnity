@@ -2,16 +2,10 @@
 
 public class Dagger : Weapon
 {
-    public override string ToString()
-    {
-        return "Dagger"; //representation
-    }
-    public Dagger()
-    {
-        ID = 2;
-        maxDamage = 8;
-    }
-    public override int maxDamage { get; set; }
+    private static readonly int _id = 1;  // Unique ID for the Dagger class
+    public override int ID => _id;        // Implements the ID property in Item
+    public override int maxDamage { get; set; } = 8;
+
     public override void Attack(Monster monster) // attack monster for random damage 
     {
         Debug.Log("Rolling Dice...");

@@ -2,16 +2,9 @@
 
 public class LongSword : Weapon
 {
-    public override string ToString()
-    {
-        return "LongSword"; //representation
-    }
+    private static readonly int _id = 2;  // Unique ID for the LongSword class
+    public override int ID => _id;        // Implements the ID property in Item
 
-    public LongSword()
-    {
-        ID = 3;
-        maxDamage = 12;
-    }
     public override int maxDamage { get; set; }
 
     public override void Attack(Monster monster) // attack monster for random damage 

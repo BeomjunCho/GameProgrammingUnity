@@ -1,124 +1,115 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 
 
 public class Map : MonoBehaviour
 {
-    public GameObject startingRoomPrefab;
-    public GameObject bossRoomPrefab;
-    public GameObject treasureRoomPrefab;
-    public GameObject combatRoomPrefab;
-    public GameObject healingRoomPrefab;
-    public GameObject tradeRoomPrefab;
-    public GameObject libraryRoomPrefab;
+    [SerializeField] private Room[] RoomPrefabs;
+    [SerializeField] private Room StartingRoomPrefab;
+    [SerializeField] private Room BossRoomPrefab;
+    [SerializeField] private float RoomSize = 30;
+    private const int MapSize = 9;
+    public Dictionary<Vector2, Room> RoomDic = new();
 
-    public Room currentRoom;
-    public Room lastRoom; 
-
-    List<Room> mapList = new List<Room>();
-
-    private int mapSize =  3;
-    private int allRoom;
-
-    public void Awake() 
+    /// <summary>
+    ///     Create each room instances and coordinates
+    ///     Store that coordinates in room instance
+    ///     Add information in dictionary
+    /// </summary>
+    public void CreateMap(ref Inventory inventory)
     {
-        allRoom = (mapSize * mapSize);
-        BuildRooms();
-        VisualizeMap();
-        currentRoom = mapList[0]; 
-        lastRoom = mapList[mapList.Count - 1];
-    }
+        //Instantiate starting room at proper coords
+        Vector2 startCoords = new Vector2(0, 0);
+        var startingRoomInstance = Instantiate(StartingRoomPrefab, transform);
+        startingRoomInstance.SetRoomLocation(startCoords);
+        startingRoomInstance.SetPlayerInventory(ref inventory);
+        RoomDic.Add(startCoords, startingRoomInstance);
 
-        
-    public void BuildRooms() // build game room. first is starting room and last is boss room always
-    {
-        mapList.Clear();
+        //Instantiate boss room at proper coords
+        Vector2 bossCoords = new Vector2((MapSize - 1) * RoomSize, (MapSize - 1) * RoomSize);
+        var bossRoomInstance = Instantiate(BossRoomPrefab, transform);
+        bossRoomInstance.SetRoomLocation(bossCoords);
+        bossRoomInstance.SetPlayerInventory(ref inventory);
+        RoomDic.Add(bossCoords, bossRoomInstance);
 
-        GameObject startRoomObj = Instantiate(startingRoomPrefab, Vector3.zero, Quaternion.identity);
-        StartingRoom startingRoom = startRoomObj.GetComponent<StartingRoom>();  // Get the StartingRoom script
-        mapList.Add(startingRoom);
-
-        for (int i = 1; i < allRoom - 1; i++)
+        for (int x = 0; x < MapSize; x++)
         {
-            Room rndRoom = RandomRoomGenerator();
-            mapList.Add(rndRoom);
-        }
-
-        GameObject bossRoomObj = Instantiate(bossRoomPrefab, Vector3.zero, Quaternion.identity);
-        BossRoom bossRoom = bossRoomObj.GetComponent<BossRoom>(); // Get the BossRoom script
-        mapList.Add(bossRoom);
-    }
-
-    public Room RandomRoomGenerator()
-    {
-        int roomIndex = Random.Range(0, 5);
-
-        GameObject roomObj = null; // Create a reference to hold the instantiated prefab
-        Room roomComponent = null; // This will hold the Room component after instantiation
-
-        switch (roomIndex)
-        {
-            case 0:
-                roomObj = Instantiate(treasureRoomPrefab, Vector3.zero, Quaternion.identity);
-                roomComponent = roomObj.GetComponent<TreasureRoom>(); // Get the TreasureRoom script
-                break;
-            case 1:
-                roomObj = Instantiate(combatRoomPrefab, Vector3.zero, Quaternion.identity);
-                roomComponent = roomObj.GetComponent<CombatRoom>(); // Get the CombatRoom script
-                break;
-            case 2:
-                roomObj = Instantiate(healingRoomPrefab, Vector3.zero, Quaternion.identity);
-                roomComponent = roomObj.GetComponent<HealingRoom>(); // Get the HealingRoom script
-                break;
-            case 3:
-                roomObj = Instantiate(tradeRoomPrefab, Vector3.zero, Quaternion.identity);
-                roomComponent = roomObj.GetComponent<TradeRoom>(); // Get the TradeRoom script
-                break;
-            case 4:
-                roomObj = Instantiate(libraryRoomPrefab, Vector3.zero, Quaternion.identity);
-                roomComponent = roomObj.GetComponent<LibraryRoom>(); // Get the LibraryRoom script
-                break;
-            default:
-                roomObj = Instantiate(treasureRoomPrefab, Vector3.zero, Quaternion.identity);
-                roomComponent = roomObj.GetComponent<TreasureRoom>(); // Default to TreasureRoom
-                break;
-        }
-
-        return roomComponent; // Return the Room component (it will be a specific type but upcast to Room)
-    }
-    private void VisualizeMap()
-    {
-        int roomIndex = 0; // start with the first room in mapList
-
-        for (int x = 0; x < mapSize; x++)
-        {
-            for (int z = 0; z < mapSize; z++)
+            for (int z = 0; z < MapSize; z++)
             {
-                if (roomIndex < mapList.Count) // Ensure it does not go out of bounds
-                {
-                    Room room = mapList[roomIndex]; // Get the room from mapList
-                    GameObject roomObj = room.gameObject; // Get the GameObject of the room
+                // Skip the starting room position (0, 0) and boss room position (last cell)
+                if ((x == 0 && z == 0) || (x == MapSize - 1 && z == MapSize - 1))
+                    continue;
 
-                    // Move the room's GameObject to the grid position (x, z)
-                    roomObj.transform.position = new Vector3(x, 0, z);
-
-
-                    // Get the Renderer component of roomObj to change its color
-                    Renderer roomRenderer = roomObj.GetComponent<Renderer>();
-
-
-                    // Point out where is the starting room with sphere
-                    if (room is StartingRoom)
-                    {
-                        GameObject startingRoomIndicater = GameObject.CreatePrimitive(PrimitiveType.Sphere); // create sphere primitive
-                        startingRoomIndicater.transform.position = new Vector3(x, 1, z); // + 1 on Y-axis to avoid overlap
-                        startingRoomIndicater.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f); // scale the sphere
-                        startingRoomIndicater.transform.parent = roomObj.transform; // parent roomObj to sphere (Sphere is a child in roomObj)
-                    }
-
-                    roomIndex++; // Move to the next room in the list
-                }
+                // Coordinates for roomInstance
+                Vector2 coords = new Vector2(x * RoomSize, z * RoomSize);
+                
+                // Create random room instance from RoomPrefabs 
+                Room roomInstance = Instantiate(RoomPrefabs[Random.Range(0, RoomPrefabs.Length)], transform);
+                // Store that coordinates in room instance and move it to the coordinate location
+                roomInstance.SetRoomLocation(coords);
+                // Send player inventory to each room to use it.
+                roomInstance.SetPlayerInventory(ref inventory);
+                // Add coordinates information and room instance in Dictionary
+                RoomDic.Add(coords, roomInstance);
             }
+        }
+        // Loop each room in room dictionary
+        foreach (var _room in RoomDic)
+        {
+            Vector2 currentCoords = _room.Key;
+
+            // Send next room coordinates and check if there is specific coordinates in dictionary
+            Room northRoom = FindRoomAtPosition(currentCoords + Vector2.up * RoomSize);
+            Room eastRoom = FindRoomAtPosition(currentCoords + Vector2.right * RoomSize);
+            Room southRoom = FindRoomAtPosition(currentCoords + Vector2.down * RoomSize);
+            Room westRoom = FindRoomAtPosition(currentCoords + Vector2.left * RoomSize);
+
+            // Set connections in each direction
+            _room.Value.SetRooms(northRoom, eastRoom, southRoom, westRoom);
+        }
+    }
+
+    /// <summary>
+    ///     Try to find a map with parameter coordinates in dictionary
+    ///     If it finds room, return room
+    ///     If it fails to find, return null
+    /// </summary>
+    private Room FindRoomAtPosition(Vector2 coordinates)
+    {
+        // Check if the dictionary contains this room coordinates
+        if (RoomDic.TryGetValue(coordinates, out Room room))
+        {
+            // If found, return the room at those coordinates
+            return room;
+        }
+        else
+        {
+            // If not found, return null (meaning no room exists at those coordinates)
+            return null;
+        }
+    }
+
+    public void DebugRoomPositionsAndConnections()
+    {
+        Debug.Log("=== Room Positions and Connections ===");
+
+        foreach (var roomEntry in RoomDic)
+        {
+            Vector2 gridPosition = roomEntry.Key;
+            Room room = roomEntry.Value;
+
+            // Build the debug message
+            string debugMessage = $"Room at Grid Position: {gridPosition}\n" +
+                                  $"  World Position: {room.transform.position}\n" +
+                                  $"  Connected Rooms:\n" +
+                                  $"    North: {(room.North != null ? room.North.RoomPosition.ToString() : "None")}\n" +
+                                  $"    East: {(room.East != null ? room.East.RoomPosition.ToString() : "None")}\n" +
+                                  $"    South: {(room.South != null ? room.South.RoomPosition.ToString() : "None")}\n" +
+                                  $"    West: {(room.West != null ? room.West.RoomPosition.ToString() : "None")}\n";
+
+            // Log the message
+            Debug.Log(debugMessage);
         }
     }
 }
