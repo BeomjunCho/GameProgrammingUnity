@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -7,18 +5,26 @@ public class Interaction : MonoBehaviour
 {
     [SerializeField] private Camera _playerCamera; // Player camera on head
     [SerializeField] private float _interactionRange; // Interaction range to interact with game object
+    [SerializeField] private BattleHud _battleHud;
     private bool _isLookingAtItem = false; // check if player looks at item
     private bool _isLookingAtChest = false; // check if player looks at chest
     private bool _isLookingAtScroll = false; // check if player looks at scroll book
     private bool _isLookingAtStatue = false; // check if player looks at angel statue
     private bool _isLookingAtDemon = false; // check if player looks at trade demon
+    private bool _isLookingAtMonster = false; // check if player looks at monster
     private TextMeshProUGUI _interactionIndicator; // text UI for showing which object is player looking
     Inventory _inventory; // To save inventory from game controller
+    private UIManager _uiManager;
+    
+    public Monster detectedmonster;
 
     public void SetUp(ref Inventory inventory)
     {
         // Find and assign the TextMeshProUGUI component at runtime
-        GameObject IndicatorObject = GameObject.Find("UIScreen/Indicator"); // Find indicator in game scene
+        GameObject IndicatorObject = GameObject.Find("UI_Manager/Indicator"); // Find indicator in game scene
+        GameObject uiManagerObj = GameObject.Find("UI_Manager");
+
+        _uiManager = uiManagerObj.GetComponent<UIManager>();
 
         if (IndicatorObject != null)
         {
@@ -35,10 +41,13 @@ public class Interaction : MonoBehaviour
         }
 
         _inventory = inventory; // Assign inventory from game controller
+
+
     }
 
     private void Update()
     {
+        //Debug.Log($"UPDATE {detectedmonster}");
         // Check object per frames
         CheckObjectOnRay();
 
@@ -61,8 +70,12 @@ public class Interaction : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.F) && _isLookingAtDemon) // "F" for interaction with angel statue
         {
-            Debug.Log("F pressed");
             TryTrade();
+        }
+        if (Input.GetKeyDown(KeyCode.F) && _isLookingAtMonster) // "F" for interaction with angel statue
+        {
+            Debug.Log("Start fight");
+            BattleStart();
         }
     }
 
@@ -119,6 +132,15 @@ public class Interaction : MonoBehaviour
                 _isLookingAtDemon = true;
                 return;
             }
+
+            if (hit.collider.TryGetComponent<Monster>(out Monster monster))
+            {
+                // Indicate that the player is looking at a monster
+                _interactionIndicator.text = "Fight (F)";
+                _interactionIndicator.gameObject.SetActive(true);
+                _isLookingAtMonster = true;
+                return;
+            }
         }
 
         // If no item is detected, hide the indicator
@@ -128,6 +150,7 @@ public class Interaction : MonoBehaviour
         _isLookingAtScroll = false;
         _isLookingAtStatue = false;
         _isLookingAtDemon = false;
+        _isLookingAtMonster = false;
     }
 
     void TryPickUpItem()
@@ -142,14 +165,10 @@ public class Interaction : MonoBehaviour
             if (hitObject.TryGetComponent<Item>(out Item item))
             {
                 Debug.Log("Item detected");
-                // Find the corresponding item prefab in the inventory
-                GameObject itemPrefab = _inventory.FindItemPrefabByID(item.ID);
 
-                if (itemPrefab != null)
+                if (item != null)
                 {
-                    // Pass the prefab to AttemptPickUpItem to add it to the inventory
-                    Debug.Log($"Player picked up {itemPrefab.name}");
-                    _inventory.AddItem(itemPrefab); // Add the item to the player's inventory
+                    _inventory.AddItem(item.ID); // Add the item to the player's inventory
 
                     // Destroy the item from the game scene after adding it to the inventory
                     Destroy(hitObject);
@@ -216,7 +235,6 @@ public class Interaction : MonoBehaviour
 
     void TryTrade()
     {
-        Debug.Log("try trade");
         Ray ray = new Ray(_playerCamera.transform.position, _playerCamera.transform.forward);
         if (Physics.Raycast(ray, out RaycastHit hit, _interactionRange))
         {
@@ -230,4 +248,44 @@ public class Interaction : MonoBehaviour
             }
         }
     }
+
+    void BattleStart()
+    {
+        Ray ray = new Ray(_playerCamera.transform.position, _playerCamera.transform.forward);
+        if (Physics.Raycast(ray, out RaycastHit hit, _interactionRange))
+        {
+            Debug.Log("Battle start");
+            // Check if the hit object is a NormalMonster
+            if (hit.collider.TryGetComponent<NormalMonster>(out NormalMonster normalMonster))
+            {
+                detectedmonster = normalMonster;
+                Debug.Log("Normal Monster detected.");
+                Debug.Log($"{detectedmonster}");
+                _uiManager.OpenBattleMenu();
+            }
+            // Check if the hit object is a BossMonster
+            else if (hit.collider.TryGetComponent<BossMonster>(out BossMonster bossMonster))
+            {
+                detectedmonster = bossMonster;
+                Debug.Log("Boss Monster detected.");
+                Debug.Log($"{detectedmonster}");
+                _uiManager.OpenBattleMenu();
+            }
+            else
+            {
+                Debug.Log("The object is not a monster.");
+            }
+           
+        }
+    }
+    public void LogDetectedMonster()
+    {
+        Debug.Log("Current detected monster: " + detectedmonster);
+    }
+
+    public Monster ReturnDetectedMonster()
+    {
+        return detectedmonster;
+    }
+
 }

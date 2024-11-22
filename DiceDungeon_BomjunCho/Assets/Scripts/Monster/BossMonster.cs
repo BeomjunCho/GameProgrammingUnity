@@ -2,41 +2,55 @@
 
 public class BossMonster : Monster
 {
-    public override string ToString()
-    {
-        return "Pumpking"; //representation
-    }
-    public BossMonster()
-    {
-        hp = 30;
-        damage = 3;
-    }
-    public override int hp { get; set; }
+    private Player _player;
+    public override int max_hp { get; set; }
+    public override int cur_hp { get; set; }
     public override int damage { get; set; }
 
-    public override void Attack(Player user)
+    public void SetUp()
     {
-        if (user.shield == 0)// if user doesn't have shield, give damage to hp
+        _player = Object.FindAnyObjectByType<Player>();
+        max_hp = 30;
+        cur_hp = 30;
+        damage = 3;
+    }
+
+    public override string Attack()
+    {
+        string attackResult = "";
+
+        if (_player.shield == 0) // if the player doesn't have a shield, deal damage to HP
         {
-            user.hp -= damage;
-            Debug.Log("Pumpking attacked you. You lost 3 hp points");
+            _player.curHP -= damage;
+            attackResult = $"Monster attacked you. You lost {damage} HP points.";
         }
-        else if (user.shield > 0) // if user has shield, give damage to shield
+        else if (_player.shield > 0) // if the player has a shield, deal damage to the shield
         {
-            user.shield -= damage;
-            Debug.Log("Pumpking attacked you but it is blocked by your shield!\nShield -3");
-            if (user.shield < 0)// when shield less than 0
+            _player.shield -= damage;
+            attackResult = $"Monster attacked you but it was blocked by your shield! Shield took {damage} damage.";
+
+            if (_player.shield < 0) // when the shield goes below 0
             {
-                Debug.Log("Shield spell is broken!");
-                user.shield = 0;// set shield 0 again
+                _player.curHP += _player.shield; // carry over the remaining negative value to HP
+                attackResult += "\nShield spell is broken!";
+                _player.shield = 0; // reset shield to 0
             }
         }
+
+        return attackResult; // Return the result to be used elsewhere
     }
 
-    public override void ShowHp()
+    public override void TakeDamage()
     {
-        Debug.Log($"\nBoss Moster hp: {hp}");
+
     }
 
+    private void Update()
+    {
+        if (cur_hp <= 0)
+        {
+            this.gameObject.SetActive(false);
+        }
+    }
 }
         

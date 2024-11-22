@@ -1,83 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &1780277274609994279
-PrefabInstance:
+--- !u!1 &3715849945474153159
+GameObject:
   m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 6728266733693256670}
-    m_Modifications:
-    - target: {fileID: 1413196971216449258, guid: 4e6942be1977d3a4db0a8e1043bf9c82, type: 3}
-      propertyPath: m_Name
-      value: DragonKing
-      objectReference: {fileID: 0}
-    - target: {fileID: 6746676975283911265, guid: 4e6942be1977d3a4db0a8e1043bf9c82, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -13.05
-      objectReference: {fileID: 0}
-    - target: {fileID: 6746676975283911265, guid: 4e6942be1977d3a4db0a8e1043bf9c82, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -16.79
-      objectReference: {fileID: 0}
-    - target: {fileID: 6746676975283911265, guid: 4e6942be1977d3a4db0a8e1043bf9c82, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 2.19
-      objectReference: {fileID: 0}
-    - target: {fileID: 6746676975283911265, guid: 4e6942be1977d3a4db0a8e1043bf9c82, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6746676975283911265, guid: 4e6942be1977d3a4db0a8e1043bf9c82, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6746676975283911265, guid: 4e6942be1977d3a4db0a8e1043bf9c82, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6746676975283911265, guid: 4e6942be1977d3a4db0a8e1043bf9c82, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6746676975283911265, guid: 4e6942be1977d3a4db0a8e1043bf9c82, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6746676975283911265, guid: 4e6942be1977d3a4db0a8e1043bf9c82, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6746676975283911265, guid: 4e6942be1977d3a4db0a8e1043bf9c82, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7481169137275933938, guid: 4e6942be1977d3a4db0a8e1043bf9c82, type: 3}
-      propertyPath: m_Size.x
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7481169137275933938, guid: 4e6942be1977d3a4db0a8e1043bf9c82, type: 3}
-      propertyPath: m_Size.y
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7481169137275933938, guid: 4e6942be1977d3a4db0a8e1043bf9c82, type: 3}
-      propertyPath: m_Size.z
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7481169137275933938, guid: 4e6942be1977d3a4db0a8e1043bf9c82, type: 3}
-      propertyPath: m_Center.y
-      value: 2.49
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 4e6942be1977d3a4db0a8e1043bf9c82, type: 3}
---- !u!4 &4978116174451503174 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6746676975283911265, guid: 4e6942be1977d3a4db0a8e1043bf9c82, type: 3}
-  m_PrefabInstance: {fileID: 1780277274609994279}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6700830434676402633}
+  m_Layer: 0
+  m_Name: BossMonsterSpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6700830434676402633
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3715849945474153159}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: -13.1, y: -17.08, z: 0.63}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6728266733693256670}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!1001 &2559124711577282127
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -236,7 +189,7 @@ PrefabInstance:
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 9141265660551210385, guid: 8708fc2d5386f9041a389956c8cf204e, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 4978116174451503174}
+      addedObject: {fileID: 6700830434676402633}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6928164715018302176, guid: 8708fc2d5386f9041a389956c8cf204e, type: 3}
       insertIndex: -1
@@ -297,6 +250,8 @@ MonoBehaviour:
   StoneDoorEast: {fileID: 4499114800198891416}
   RoomLight: {fileID: 9030796007209889069}
   _playerInventory: {fileID: 0}
+  _bossMonsterPrefab: {fileID: 3636106242571164402, guid: 4e6942be1977d3a4db0a8e1043bf9c82, type: 3}
+  _spawnPoint: {fileID: 6700830434676402633}
 --- !u!65 &5737879641629138077
 BoxCollider:
   m_ObjectHideFlags: 0

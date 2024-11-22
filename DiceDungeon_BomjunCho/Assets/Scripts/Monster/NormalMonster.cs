@@ -2,40 +2,60 @@
 
 public class NormalMonster : Monster
 {
-    public override string ToString()
-    {
-        return "Minotaur"; //representation
-    }
-    public NormalMonster()
-    {
-        hp = 10;
-        damage = 1;
-    }
-    public override int hp { get; set; }
+    private Player _player;
+
+    public override int max_hp { get; set; }
+    public override int cur_hp { get; set; }
     public override int damage { get; set; }
 
-    public override void Attack(Player user)
+    public void SetUp()
     {
-        if (user.shield == 0) // if user doesn't have shield, give damage to hp
+        _player = Object.FindAnyObjectByType<Player>();
+
+        if (_player == null)
         {
-            user.hp -= damage;
-            Debug.Log("Minotaur attacked you. You lost 1 hp points");
+            Debug.LogWarning("Monster script can't find player instance");
         }
-        else if (user.shield > 0)// if user has shield, give damage to shield
-        {
-            user.shield -= damage;
-            Debug.Log("Minotaur attacked you but it is blocked by your shield!\nShield -1");
-            if (user.shield < 0) // when shield less than 0
-            {
-                Debug.Log("Shield spell is broken!");
-                user.shield = 0; // set shield 0 again
-            }
-        }
+        max_hp = 10; 
+        cur_hp = 10;
+        damage = 2;
     }
 
-    public override void ShowHp()
+    public override string Attack()
     {
-        Debug.Log($"\nMoster hp: {hp}");
+        string attackResult = "";
+
+        if (_player.shield == 0) // if the player doesn't have a shield, deal damage to HP
+        {
+            _player.curHP -= damage;
+            attackResult = $"Monster attacked you. You lost {damage} HP points.";
+        }
+        else if (_player.shield > 0) // if the player has a shield, deal damage to the shield
+        {
+            _player.shield -= damage;
+            attackResult = $"Monster attacked you but it was blocked by your shield! Shield took {damage} damage.";
+
+            if (_player.shield < 0) // when the shield goes below 0
+            {
+                _player.curHP += _player.shield; // carry over the remaining negative value to HP
+                attackResult += "\nShield spell is broken!";
+                _player.shield = 0; // reset shield to 0
+            }
+        }
+
+        return attackResult; // Return the result to be used elsewhere
+    }
+    public override void TakeDamage()
+    {
+
+    }
+
+    private void Update()
+    {
+        if (cur_hp <= 0)
+        {
+            this.gameObject.SetActive(false);
+        }
     }
 
 }

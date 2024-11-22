@@ -3,6 +3,19 @@
 //In this room, Player fights with boss monster
 public class BossRoom : Room
 {
+    [SerializeField] private BossMonster _bossMonsterPrefab;
+    [SerializeField] private Transform _spawnPoint;
+
+    private void Start()
+    {
+        Monster bossMonsterInstance = Instantiate(_bossMonsterPrefab, transform);
+        bossMonsterInstance.transform.position = _spawnPoint.position;
+        bossMonsterInstance.transform.Rotate(0, 180f, 0);
+        if (bossMonsterInstance.TryGetComponent<BossMonster>(out BossMonster bossMonster))
+        {
+            bossMonster.SetUp();
+        }
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -14,7 +27,6 @@ public class BossRoom : Room
         }
     }
 
-
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -25,28 +37,6 @@ public class BossRoom : Room
         }
     }
 
-    /*
-    public override void OnRoomEntered(Player user)
-    {
-        Debug.Log("You entered Boss Room.");
-        Debug.Log("You found a boss monster! Ready to fight!\n(Enter anykey)");
-        BossMonster monster = new BossMonster();
-        DieRoller dieRoller = new DieRoller();
-        Debug.Log("Pumpking wants to kill you.");
-        dieRoller.GamePlayLoop(user, monster); // dice roll battle starts
-    }
-
-    public override void OnRoomSearched(Player user)
-    {
-        //user.ShowPlayerState();
-        Debug.Log("Do you want to leave this room?\n(Enter anykey)");
-    }
-
-    public override void OnRoomExit(Player user)
-    {
-        Debug.Log("You left from Boss Room");
-    }
-    */
 }
 
 

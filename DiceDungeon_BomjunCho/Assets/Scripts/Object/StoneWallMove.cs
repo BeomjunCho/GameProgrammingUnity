@@ -7,7 +7,7 @@ public class StoneWallMove : MonoBehaviour
     [SerializeField] private float _moveUpDistance; // Distance to move up
     [SerializeField] private float _moveSpeed;      // Speed of movement
     private Vector3 _originalPosition; // Original position 
-    private bool _isMoving = false;    // Check if the wall is already moving
+    private bool _isMoving = false;    // Check if the wall is moving
 
     private void Start()
     {

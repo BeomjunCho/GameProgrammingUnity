@@ -14,10 +14,10 @@ public class GameController : MonoBehaviour
     private PlayerController _playerController;
     private Inventory _inventory;
     private Interaction _interaction;
+    private Player _player;
     public Inventory InventoryPrefab { get => _inventoryPrefab; set => _inventoryPrefab = value; }
 
-
-    public void Start()
+    public void StartGame()
     {
         Debug.Log("GameManager Start");
         // zero our manager position
@@ -27,15 +27,6 @@ public class GameController : MonoBehaviour
         InstantiatePrefabs();
         // create the map
         SetUpInstances();
-        // Start game
-        StartGame();
-    }
-
-    private void StartGame()
-    {
-        // Intro
-        Debug.Log("Hello, World!");
-
     }
 
     void InstantiatePrefabs()
@@ -54,20 +45,22 @@ public class GameController : MonoBehaviour
 
     void SetUpInstances()
     {
+        _gameMap.SetUp();
         // Create rooms
         _gameMap.CreateMap(ref _inventory);
         // Set up Player
         _playerController.SetUp(ref _inventory);
         // Get the Interaction component from the instantiated PlayerController instance
         _interaction = _playerController.GetComponent<Interaction>();
-
-        if (_interaction != null)
+        _player = _playerController.GetComponent<Player>();
+        if (_interaction != null && _player != null)
         {
             _interaction.SetUp(ref _inventory);
+            _player.Initialize();
         }
         else
         {
-            Debug.LogWarning("Interaction component not found on PlayerControllerPrefab instance.");
+            Debug.LogWarning("Interaction or player component not found on PlayerControllerPrefab instance.");
         }
         
         // Set up Inventory

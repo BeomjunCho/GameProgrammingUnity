@@ -432,6 +432,7 @@ GameObject:
   - component: {fileID: 6719655787962788799}
   - component: {fileID: 5343958509976876330}
   - component: {fileID: 8124253649202749323}
+  - component: {fileID: 2104892192177493857}
   m_Layer: 0
   m_Name: PlayerController
   m_TagString: Player
@@ -578,7 +579,7 @@ MonoBehaviour:
   _jumpPower: 7
   _lookSpeed: 3.5
   _lookXLimit: 60
-  canMove: 1
+  canMove: 0
 --- !u!114 &8124253649202749323
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -593,3 +594,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerCamera: {fileID: 1000668735753047311}
   _interactionRange: 10
+  _battleHud: {fileID: 1554519139264207344, guid: 2f2fea55ac1a26b4cb9f52c2cd8bc1c3, type: 3}
+  detectedmonster: {fileID: 0}
+--- !u!114 &2104892192177493857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5714503075714964401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41bf5efb0118e764d884d6c564e40e68, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  userName: Jun
+  maxHp: 10
+  curHP: 8
+  shield: 10
