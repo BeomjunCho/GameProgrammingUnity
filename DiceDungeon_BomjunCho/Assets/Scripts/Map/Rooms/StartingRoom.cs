@@ -1,9 +1,16 @@
 ﻿using UnityEngine;
 
-//Player starts game in this room.
+/// <summary>
+/// The StartingRoom class represents the room where the player begins the game.
+/// It manages player entry and exit events, toggling room lights and logging relevant information.
+/// </summary>
 public class StartingRoom : Room
 {
-
+    /// <summary>
+    /// Triggered when an object enters the StartingRoom's collider.
+    /// Activates the room light and logs that the player has entered the room.
+    /// </summary>
+    /// <param name="other">The collider of the object that entered the room.</param>
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -14,7 +21,11 @@ public class StartingRoom : Room
         }
     }
 
-
+    /// <summary>
+    /// Triggered when an object exits the StartingRoom's collider.
+    /// Deactivates the room light and logs that the player has left the room.
+    /// </summary>
+    /// <param name="other">The collider of the object that exited the room.</param>
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -24,40 +35,4 @@ public class StartingRoom : Room
             Debug.Log("Player is leaving from Starting Room.");
         }
     }
-
-    /*
-    public override void OnRoomEntered(Player user)
-    {
-        Debug.Log("You entered Starting Room.");
-        Debug.Log("This is a damp, slightly dark room.\n(Enter anykey)");
-    }
-
-    public override void OnRoomSearched(Player user)
-    {
-
-        if (!IsVisited) // is this room visited?
-        {
-            Debug.Log("You are searching Starting Room.");
-            Debug.Log("There are dagger and potion on the floor\n(Enter anykey)");
-        }
-        else
-        {
-            Debug.Log("You are searching Starting Room.");
-            Debug.Log("Nothing is here.");
-        }
-        //user.ShowPlayerState();
-        Debug.Log("Do you want to leave this room?\n(Enter anykey)");
-
-    }
-
-    public override void OnRoomExit(Player user)
-    {
-        Debug.Log("You are leaving from Starting Room");
-        IsVisited = true; // Mark the room as visited
-    }
-    */
 }
-
-
-
-

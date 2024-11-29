@@ -1,13 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-
+/// <summary>
+/// The AngelStatue class represents a statue that grants healing potions to the player when prayed to.
+/// Once activated, the statue cannot be prayed to again.
+/// </summary>
 public class AngelStatue : MonoBehaviour
 {
     [SerializeField] private GameObject _portion;
     private bool _isPrayed = false; // Boolean for checking if player already pray
     private int _portionAmount = 2;
+
+    /// <summary>
+    /// Grants healing potions to the player if the statue has not already been prayed to.
+    /// Spawns a predefined number of potion objects near the statue's position.
+    /// </summary>
     public void HealPlayer()
     {
         if (_isPrayed) return; // Prevent re-Praying

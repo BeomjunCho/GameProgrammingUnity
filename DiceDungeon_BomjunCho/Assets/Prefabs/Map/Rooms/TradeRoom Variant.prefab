@@ -124,6 +124,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2368083928994563741, guid: fe39cd5158943384d92119147e53d66b, type: 3}
   m_PrefabInstance: {fileID: 4021841289320373784}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8446444459442401689 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4821032087544000385, guid: fe39cd5158943384d92119147e53d66b, type: 3}
+  m_PrefabInstance: {fileID: 4021841289320373784}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6a026f279719a14f868e4e1e38db2cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7932826068160463544
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -323,7 +334,7 @@ MonoBehaviour:
   StoneDoorWest: {fileID: 4001144512810802739}
   StoneDoorEast: {fileID: 8351019547705971567}
   RoomLight: {fileID: 3514791252620462554}
-  _playerInventory: {fileID: 0}
+  _tradeDemon: {fileID: 8446444459442401689}
 --- !u!4 &1210135592869324585 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9141265660551210385, guid: 8708fc2d5386f9041a389956c8cf204e, type: 3}

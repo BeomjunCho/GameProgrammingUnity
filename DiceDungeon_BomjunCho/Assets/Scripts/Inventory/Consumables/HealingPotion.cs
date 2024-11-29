@@ -14,35 +14,47 @@ public class HealingPotion : Consumable
 
     private Player _player;
 
+    /// <summary>
+    /// Finds and assigns the Player object in the scene.
+    /// </summary>
     public void GetPlayer()
     {
         _player = Object.FindAnyObjectByType<Player>();
     }
-    public void Heal() // heal _player until 10 curHP, without exceeding it
-    {
-        int result = randomNumber(effect);
-        int potentialNewHp = _player.curHP + result; // Calculate the potential new curHP
 
-        if (_player.curHP == 10) // when _player curHP is already full
+    /// <summary>
+    /// Heals the player by a random amount based on the potion's effect,
+    /// ensuring the player's health does not exceed the maximum of 10.
+    /// </summary>
+    public void Heal()
+    {
+        AudioManager.Instance.PlaySfx(AudioManager.Instance.sfxList[(int)SfxTrack.Potion], 3.0f);
+        int result = randomNumber(effect);
+        int healAmount = Mathf.Min(result, _player.maxHp - _player.curHP); // Calculate the actual heal amount.
+
+        if (_player.curHP == _player.maxHp) // Player is already fully healed.
         {
-            _dynamicText = $"Your heal potion is enchanted by dice number {result}" +
-                $"You are already fully healed. You don't get healed.";
-        }
-        else if (potentialNewHp >= 10) // if _player curHP is potentially over 10
-        {
-            int healAmount = 10 - _player.curHP; // calculate heal amount
-            _player.curHP = 10; // set _player curHP to 10
-            _dynamicText = $"Your heal potion is enchanted by dice number {result}." +
-                $"You got healed for {healAmount} by using heal potion. Your curHP is now full at 10.";
+            _dynamicText = $"Dice number was {result}! You are already fully healed. You don't get healed.";
         }
         else
         {
-            _player.curHP += result; // add result to _player curHP
-            _dynamicText = $"Your heal potion is enchanted by dice number {result}" +
-                $"You got healed for {result} by using heal potion. Your current curHP is {_player.curHP}.";
+            _player.curHP += healAmount; // Add healAmount to the player's current HP.
+
+            if (_player.curHP == _player.maxHp) // Player's HP is now full.
+            {
+                _dynamicText = $"Dice number was {result}! You got healed for {healAmount}. Your curHP is now full at {_player.maxHp}.";
+            }
+            else // Player's HP increased but is not yet full.
+            {
+                _dynamicText = $"Dice number was {result}! You got healed for {healAmount}. Your current curHP is {_player.curHP}.";
+            }
         }
     }
 
+    /// <summary>
+    /// Provides a description of the action taken with the Healing Potion.
+    /// </summary>
+    /// <returns>A string describing the effect of the Healing Potion.</returns>
     public override string ItemActionText()
     {
         return _dynamicText;    

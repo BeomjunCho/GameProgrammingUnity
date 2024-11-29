@@ -296,6 +296,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06ce64dbab98a9d4dad7633cbf37cd5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _HammerPrefab: {fileID: 7170803747956514846, guid: 3db2f5744fd5fa741af4d6917dc86425, type: 3}
 --- !u!1 &1468341939129443142
 GameObject:
   m_ObjectHideFlags: 0

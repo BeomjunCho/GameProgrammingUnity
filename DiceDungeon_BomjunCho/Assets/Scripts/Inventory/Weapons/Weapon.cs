@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿/// <summary>
+/// Weapon items will inherits from this class
+/// It is used in inventory to check if item is weapon
+/// </summary>
 
 public abstract class Weapon : Item
 {

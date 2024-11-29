@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 
+/// <summary>
+/// The Map class generates a grid-based map for the game. 
+/// It places rooms on a grid with specific rules, including a starting room, a boss room, and randomly selected rooms 
+/// based on predefined probabilities. Rooms are connected to their neighbors for seamless navigation.
+/// </summary>
 public class Map : MonoBehaviour
 {
     [SerializeField] private Room HealingRoomPrefab;
@@ -9,16 +14,18 @@ public class Map : MonoBehaviour
     [SerializeField] private Room TradeRoomPrefab;
     [SerializeField] private Room CombatRoomPrefab;
     [SerializeField] private Room TreasureRoomPrefab;
-
     [SerializeField] private Room StartingRoomPrefab;
     [SerializeField] private Room BossRoomPrefab;
     [SerializeField] private float RoomSize = 30;
     private const int MapSize = 9;
-    public Dictionary<Vector2, Room> RoomDic = new();
+    public Dictionary<Vector2, Room> RoomDic = new(); // Stores room instances with their grid coordinates.
 
     // Room weights in percentage (normalized to 100%)
     private readonly Dictionary<Room, float> roomWeights = new Dictionary<Room, float>();
 
+    /// <summary>
+    /// Initializes the room weights for random room generation.
+    /// </summary>
     public void SetUp()
     {
         // Assign weights to each room prefab
@@ -29,6 +36,11 @@ public class Map : MonoBehaviour
         roomWeights.Add(TreasureRoomPrefab, 20f);
     }
 
+    /// <summary>
+    /// Creates the entire map, placing rooms based on predefined rules.
+    /// Connects each room to its neighboring rooms and assigns player inventory to each room.
+    /// </summary>
+    /// <param name="inventory">The player's inventory, passed by reference to rooms.</param>
     public void CreateMap(ref Inventory inventory)
     {
         // Instantiate starting room at proper coords
@@ -81,6 +93,10 @@ public class Map : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Selects a random room prefab based on the assigned weights for each room type.
+    /// </summary>
+    /// <returns>A randomly selected Room prefab.</returns>
     private Room GetRandomRoomByWeight()
     {
         float totalWeight = roomWeights.Values.Sum();
@@ -100,6 +116,11 @@ public class Map : MonoBehaviour
         return roomWeights.Keys.First();
     }
 
+    /// <summary>
+    /// Searches for a room at the specified grid coordinates.
+    /// </summary>
+    /// <param name="coordinates">The grid coordinates to search for.</param>
+    /// <returns>The Room found at the coordinates, or null if no room exists there.</returns>
     private Room FindRoomAtPosition(Vector2 coordinates)
     {
         if (RoomDic.TryGetValue(coordinates, out Room room))

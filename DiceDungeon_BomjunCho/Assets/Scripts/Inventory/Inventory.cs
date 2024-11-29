@@ -4,27 +4,34 @@ using System.Collections.Generic;
 public class Inventory : MonoBehaviour
 {
     // Item prefabs
-    public GameObject daggerPrefab;
-    public GameObject longSwordPrefab;
-    public GameObject dragonSwordPrefab;
-    public GameObject healPotionPrefab;
-    public GameObject fireScrollPrefab;
-    public GameObject shieldScrollPrefab;
+    public GameObject daggerPrefab;           // Prefab for the dagger weapon
+    public GameObject longSwordPrefab;        // Prefab for the long sword weapon
+    public GameObject dragonSwordPrefab;      // Prefab for the dragon sword weapon
+    public GameObject healPotionPrefab;       // Prefab for the healing potion
+    public GameObject fireScrollPrefab;       // Prefab for the fire scroll
+    public GameObject shieldScrollPrefab;     // Prefab for the shield scroll
+    public GameObject HammerPrefab;                 // Prefab for the Hammer
 
     // Inventory list to hold actual item instances
-    public List<GameObject> inventoryList = new List<GameObject>();
-    protected List<GameObject> itemsList = new List<GameObject>();
+    public List<GameObject> inventoryList = new List<GameObject>(); // List of all items in the inventory
+    protected List<GameObject> itemsList = new List<GameObject>();  // List of all available item prefabs
 
     // Dictionaries to track item quantities
     public Dictionary<int, int> itemQuantities = new Dictionary<int, int>(); // item quantity dic for consumable items
 
-
+    /// <summary>
+    /// Clears the inventory and resets item quantities on initialization.
+    /// </summary>
     private void Awake()
     {
         // Clear inventory and quantities for a fresh start
         inventoryList.Clear();
         itemQuantities.Clear();
     }
+
+    /// <summary>
+    /// Sets up the inventory by populating the available item prefab list.
+    /// </summary>
     public void SetUp()
     {
         //Add item prefabs in item list
@@ -34,12 +41,19 @@ public class Inventory : MonoBehaviour
         itemsList.Add(dragonSwordPrefab);
         itemsList.Add(fireScrollPrefab);
         itemsList.Add(shieldScrollPrefab);
+        itemsList.Add(HammerPrefab);
     }
 
+    /// <summary>
+    /// Adds an item to the inventory based on its ID.
+    /// Handles both consumables and weapons differently.
+    /// </summary>
+    /// <param name="itemId">The ID of the item to add.</param>
     public void AddItem(int itemId)
     {
         GameObject itemPrefab = FindItemPrefabByID(itemId);
         Item itemComponent = itemPrefab.GetComponent<Item>();
+
         if (itemComponent is Consumable)
         {
             if (!itemQuantities.ContainsKey(itemComponent.ID))
@@ -61,7 +75,7 @@ public class Inventory : MonoBehaviour
                 Debug.Log("Item is consumable item and it is new item in inventory");
             }
         }
-        else // Item is weapon
+        else if (itemComponent is Weapon) // Item is weapon
         {
             if (!DoesPlayerHave(itemComponent.ID)) // Player doesn't has item in Inventory
             {
@@ -79,7 +93,11 @@ public class Inventory : MonoBehaviour
         DebugInventoryContents();
     }
 
-
+    /// <summary>
+    /// Removes an item from the inventory based on its ID.
+    /// Handles quantity for consumables and complete removal for weapons.
+    /// </summary>
+    /// <param name="itemID">The ID of the item to remove.</param>
     public void RemoveItem(int itemID) // Remove specific item by ID
     {
         // item to remove placeholder
@@ -99,7 +117,7 @@ public class Inventory : MonoBehaviour
             Item item = itemToRemove.GetComponent<Item>(); //call item script
             if (item is Consumable)
             {
-                // **Change**: Use TryGetValue to safely check and retrieve quantity
+                // Use TryGetValue to safely check and retrieve quantity
                 if (itemQuantities.TryGetValue(itemID, out int quantity) && quantity > 0)
                 {
                     itemQuantities[itemID]--; // Decrease quantity
@@ -135,6 +153,11 @@ public class Inventory : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Checks if the player already has an item in the inventory based on its ID.
+    /// </summary>
+    /// <param name="itemId">The ID of the item to check.</param>
+    /// <returns>True if the item exists in the inventory, otherwise false.</returns>
     public bool DoesPlayerHave(int itemId) // check if the item is stored in inventory by using item id
     {
         foreach (var item in inventoryList)
@@ -148,6 +171,11 @@ public class Inventory : MonoBehaviour
         return false; // Item not found
     }
 
+    /// <summary>
+    /// Finds an item prefab by its ID from the available item list.
+    /// </summary>
+    /// <param name="itemID">The ID of the item to find.</param>
+    /// <returns>The item prefab if found, otherwise null.</returns>
     public GameObject FindItemPrefabByID(int itemID)
     {
         foreach (var prefab in itemsList)
@@ -162,7 +190,10 @@ public class Inventory : MonoBehaviour
         return null; // Return null if no matching prefab is found
     }
 
-
+    /// <summary>
+    /// Prints the contents of the inventory to the debug console.
+    /// Includes item names, IDs, and quantities.
+    /// </summary>
     public void DebugInventoryContents()
     {
         Debug.Log("*************Inventory contents*************");

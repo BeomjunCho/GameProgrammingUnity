@@ -1,8 +1,16 @@
 ﻿using UnityEngine;
 
-//In this room, Player gets random items
+/// <summary>
+/// The TreasureRoom class represents a room where the player can receive random items as rewards.
+/// It handles player entry and exit events, toggling room lights and logging relevant information.
+/// </summary>
 public class TreasureRoom : Room
 {
+    /// <summary>
+    /// Triggered when an object enters the TreasureRoom's collider.
+    /// Activates the room light and logs that the player has entered the room.
+    /// </summary>
+    /// <param name="other">The collider of the object that entered the room.</param>
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -10,9 +18,14 @@ public class TreasureRoom : Room
             Debug.Log("Player Entered Treasure Room.");
             RoomLight.SetActive(true);
             Debug.Log("Light on");
-        } 
+        }
     }
 
+    /// <summary>
+    /// Triggered when an object exits the TreasureRoom's collider.
+    /// Deactivates the room light and logs that the player has left the room.
+    /// </summary>
+    /// <param name="other">The collider of the object that exited the room.</param>
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -22,46 +35,4 @@ public class TreasureRoom : Room
             Debug.Log("Player is leaving from Treasure Room.");
         }
     }
-    /*
-    public override void OnRoomEntered(Player user)
-    {
-        Debug.Log("You entered Treasure Room");
-
-        if (!IsVisited) // is this room visited?
-        {
-            Debug.Log("There is one treasure chest on center of this room.\n(Enter anykey)");
-
-        }
-        else
-        {
-            Debug.Log("You have returned to the Treasure Room. The room looks the same as before except for opened chest.");
-        }
-    }
-
-    public override void OnRoomSearched(Player user)
-    {
-        Debug.Log("You are searching Treasure Room");
-
-        if (!IsVisited) // is this room visited?
-        {
-            Debug.Log("You opened the chest and there is one item!");
-
-        }
-        else
-        {
-            Debug.Log("There is nothing left to search in this room.");
-        }
-        //user.ShowPlayerState();
-    }
-
-    public override void OnRoomExit(Player user)
-    {
-        Debug.Log("You are leaving from Treasure Room");
-        IsVisited = true; // Mark the room as visited
-    }
-    */
 }
-
-
-
-

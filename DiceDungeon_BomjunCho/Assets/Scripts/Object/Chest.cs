@@ -9,8 +9,12 @@ public class Chest : MonoBehaviour
 
     private bool _isOpen = false; // Boolean for checking if chest is opened
 
+    /// <summary>
+    /// Method to open the chest and initiate item throwing.
+    /// </summary>
     public void OpenChest()
     {
+        AudioManager.Instance.PlaySfx(AudioManager.Instance.sfxList[(int)SfxTrack.ChestOpen], 2.0f);
         if (_isOpen) return; // Prevent re-opening
 
         // Rotate the chest lid by 90 degrees on the z-axis
@@ -18,11 +22,13 @@ public class Chest : MonoBehaviour
         _isOpen = true; // chest is opened
 
         // Start coroutine to delay the item instantiation
-        StartCoroutine(ThrowItemAfterDelay());
-
-        
+        StartCoroutine(ThrowItemAfterDelay());        
     }
 
+    /// <summary>
+    /// Coroutine to wait for a short delay before throwing an item from the chest.
+    /// </summary>
+    /// <returns>IEnumerator for Unity's coroutine system.</returns>
     private IEnumerator ThrowItemAfterDelay()
     {
         // 0.5 sec wait
@@ -34,7 +40,8 @@ public class Chest : MonoBehaviour
             GameObject thrownItem = Instantiate(_itemToThrow[Random.Range(0, _itemToThrow.Length)], _chestLid.position + new Vector3(0, 3, 0), Quaternion.identity);
 
             Rigidbody rb = thrownItem.GetComponent<Rigidbody>();
-            
+
+            //Throw item to right direction
             rb.AddForce(transform.up * _throwForce + transform.right * (_throwForce / 2) * -1, ForceMode.Impulse);
         }
     }

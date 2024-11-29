@@ -1,8 +1,11 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using System.Collections.Generic;
 
+/// <summary>
+/// The InventoryUI class manages the display of the player's inventory in the UI.
+/// It dynamically creates inventory slots, displays item details, and interacts with the UseItemButton for item actions.
+/// </summary>
 public class InventoryUI : MonoBehaviour
 {
     // Reference to the Inventory script
