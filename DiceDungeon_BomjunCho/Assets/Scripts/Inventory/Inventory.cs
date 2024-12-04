@@ -4,27 +4,34 @@ using System.Collections.Generic;
 public class Inventory : MonoBehaviour
 {
     // Item prefabs
-    public GameObject daggerPrefab;
-    public GameObject longSwordPrefab;
-    public GameObject dragonSwordPrefab;
-    public GameObject healPotionPrefab;
-    public GameObject fireScrollPrefab;
-    public GameObject shieldScrollPrefab;
+    public GameObject daggerPrefab;           // Prefab for the dagger weapon
+    public GameObject longSwordPrefab;        // Prefab for the long sword weapon
+    public GameObject dragonSwordPrefab;      // Prefab for the dragon sword weapon
+    public GameObject healPotionPrefab;       // Prefab for the healing potion
+    public GameObject fireScrollPrefab;       // Prefab for the fire scroll
+    public GameObject shieldScrollPrefab;     // Prefab for the shield scroll
+    public GameObject HammerPrefab;                 // Prefab for the Hammer
 
     // Inventory list to hold actual item instances
-    public List<GameObject> inventory = new List<GameObject>();
-    protected List<GameObject> itemsList = new List<GameObject>();
+    public List<GameObject> inventoryList = new List<GameObject>(); // List of all items in the inventory
+    protected List<GameObject> itemsList = new List<GameObject>();  // List of all available item prefabs
 
     // Dictionaries to track item quantities
     public Dictionary<int, int> itemQuantities = new Dictionary<int, int>(); // item quantity dic for consumable items
 
-
+    /// <summary>
+    /// Clears the inventory and resets item quantities on initialization.
+    /// </summary>
     private void Awake()
     {
         // Clear inventory and quantities for a fresh start
-        inventory.Clear();
+        inventoryList.Clear();
         itemQuantities.Clear();
     }
+
+    /// <summary>
+    /// Sets up the inventory by populating the available item prefab list.
+    /// </summary>
     public void SetUp()
     {
         //Add item prefabs in item list
@@ -34,95 +41,69 @@ public class Inventory : MonoBehaviour
         itemsList.Add(dragonSwordPrefab);
         itemsList.Add(fireScrollPrefab);
         itemsList.Add(shieldScrollPrefab);
-
-        //Debug
-        //DebugInventoryContents();
+        itemsList.Add(HammerPrefab);
     }
 
-
-    public void AddItem(GameObject itemPrefab)
+    /// <summary>
+    /// Adds an item to the inventory based on its ID.
+    /// Handles both consumables and weapons differently.
+    /// </summary>
+    /// <param name="itemId">The ID of the item to add.</param>
+    public void AddItem(int itemId)
     {
-        if (itemPrefab != null)
+        GameObject itemPrefab = FindItemPrefabByID(itemId);
+        Item itemComponent = itemPrefab.GetComponent<Item>();
+
+        if (itemComponent is Consumable)
         {
-            Item itemComponent = itemPrefab.GetComponent<Item>();
-            if (itemComponent is Consumable)
+            if (!itemQuantities.ContainsKey(itemComponent.ID))
             {
-                if (!itemQuantities.ContainsKey(itemComponent.ID))
-                {
-                    itemQuantities.Add(itemComponent.ID, 0);
-                }
-                // Track consumable quantities
-                if (DoesPlayerHave(itemComponent.ID)) // Player has item
-                {
-                    itemQuantities[itemComponent.ID]++; // Quantity + 1
-                    Debug.Log(itemComponent);
-                    Debug.Log("Item is consumable item and it's quantity +1");
-                }
-                else // Player doesn't has item in Inventory
-                {
-                    itemQuantities[itemComponent.ID] = 1; // Initialize item quantity
-                    inventory.Add(itemPrefab); // Only add to inventory if it's the first instance
-                    Debug.Log(itemComponent);
-                    Debug.Log("Item is consumable item and it is new item in inventory");
-                }
+                itemQuantities.Add(itemComponent.ID, 0);
             }
-            else // Item is weapon
+            // Track consumable quantities
+            if (DoesPlayerHave(itemComponent.ID)) // Player has item
             {
-                if (!DoesPlayerHave(itemComponent.ID)) // Player doesn't has item in Inventory
-                {
-                    inventory.Add(itemPrefab);
-                    Debug.Log(itemComponent);
-                    Debug.Log("New non-consumable item (weapon) added to inventory.");
-                }
-                else // Player has item in Inventory
-                {
-                    Debug.Log(itemComponent);
-                    Debug.Log("Non-consumable item already exists in inventory, not adding again.");
-                }
+                itemQuantities[itemComponent.ID]++; // Quantity + 1
+                Debug.Log(itemComponent);
+                Debug.Log("Item is consumable item and it's quantity +1");
+            }
+            else // Player doesn't has item in Inventory
+            {
+                itemQuantities[itemComponent.ID] = 1; // Initialize item quantity
+                inventoryList.Add(itemPrefab); // Only add to inventory if it's the first instance
+                Debug.Log(itemComponent);
+                Debug.Log("Item is consumable item and it is new item in inventory");
             }
         }
-        else
+        else if (itemComponent is Weapon) // Item is weapon
         {
-            Debug.LogWarning("The item prefab does not have an Item component attached!");
+            if (!DoesPlayerHave(itemComponent.ID)) // Player doesn't has item in Inventory
+            {
+                inventoryList.Add(itemPrefab);
+                Debug.Log(itemComponent);
+                Debug.Log("New non-consumable item (weapon) added to inventory.");
+            }
+            else // Player has item in Inventory
+            {
+                Debug.Log(itemComponent);
+                Debug.Log("Non-consumable item already exists in inventory, not adding again.");
+            }
         }
-        //DebugInventoryContents();
+        
+        DebugInventoryContents();
     }
 
-    public void AddRndItem() // add random item in inventory
-    {
-        int index = Random.Range(1, 101); // 20% dagger, 10% shield scroll, 10% fire scroll, 20% long sword, 10% dragon sword, 30% healing potion
-        if (index <= 20)
-        {
-            AddItem(daggerPrefab);
-        }
-        else if (index > 20 && index <= 30)
-        {
-            AddItem(shieldScrollPrefab);
-        }
-        else if (index > 30 && index <= 40)
-        {
-            AddItem(fireScrollPrefab);
-        }
-        else if (index > 40 && index <= 60)
-        {
-            AddItem(longSwordPrefab);
-        }
-        else if (index > 60 && index <= 70)
-        {
-            AddItem(dragonSwordPrefab);
-        }
-        else if (index > 70)
-        {
-            AddItem(healPotionPrefab);
-        }
-    }
-
+    /// <summary>
+    /// Removes an item from the inventory based on its ID.
+    /// Handles quantity for consumables and complete removal for weapons.
+    /// </summary>
+    /// <param name="itemID">The ID of the item to remove.</param>
     public void RemoveItem(int itemID) // Remove specific item by ID
     {
         // item to remove placeholder
         GameObject itemToRemove = null;
         // Find item in inventory by ID
-        foreach (var item in inventory)
+        foreach (var item in inventoryList)
         {
             if (item.GetComponent<Item>().ID == itemID)
             {
@@ -136,7 +117,7 @@ public class Inventory : MonoBehaviour
             Item item = itemToRemove.GetComponent<Item>(); //call item script
             if (item is Consumable)
             {
-                // **Change**: Use TryGetValue to safely check and retrieve quantity
+                // Use TryGetValue to safely check and retrieve quantity
                 if (itemQuantities.TryGetValue(itemID, out int quantity) && quantity > 0)
                 {
                     itemQuantities[itemID]--; // Decrease quantity
@@ -144,7 +125,7 @@ public class Inventory : MonoBehaviour
                     // Check if quantity is now zero, then remove item from dictionary
                     if (itemQuantities[itemID] == 0)
                     {
-                        inventory.Remove(itemToRemove); // Remove item from inventory
+                        inventoryList.Remove(itemToRemove); // Remove item from inventory
                         itemQuantities.Remove(itemID); // Remove ID and value from dictionary
                         Debug.Log($"Removed {itemToRemove.name} completely from inventory (quantity reached zero).");
                     }
@@ -160,7 +141,7 @@ public class Inventory : MonoBehaviour
             }
             if (item is Weapon) 
             {
-                inventory.Remove(itemToRemove); // remove item prefab game object in inventory
+                inventoryList.Remove(itemToRemove); // remove item prefab game object in inventory
                 Debug.Log($"Removed {itemToRemove} from inventory.");
             }
         }
@@ -172,9 +153,14 @@ public class Inventory : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Checks if the player already has an item in the inventory based on its ID.
+    /// </summary>
+    /// <param name="itemId">The ID of the item to check.</param>
+    /// <returns>True if the item exists in the inventory, otherwise false.</returns>
     public bool DoesPlayerHave(int itemId) // check if the item is stored in inventory by using item id
     {
-        foreach (var item in inventory)
+        foreach (var item in inventoryList)
         {
             if (item.GetComponent<Item>().ID == itemId)
             {
@@ -185,20 +171,11 @@ public class Inventory : MonoBehaviour
         return false; // Item not found
     }
 
-    public void TreasureItemAdd() 
-    {
-        int index = Random.Range(3, itemsList.Count); 
-
-        GameObject rndItemGameObject = itemsList[index];
-
-        AddItem(rndItemGameObject);
-    }
-
-    public void TradeItemAdd() //add dragon sword to inventory 
-    {
-        AddItem(dragonSwordPrefab);             
-    }
-
+    /// <summary>
+    /// Finds an item prefab by its ID from the available item list.
+    /// </summary>
+    /// <param name="itemID">The ID of the item to find.</param>
+    /// <returns>The item prefab if found, otherwise null.</returns>
     public GameObject FindItemPrefabByID(int itemID)
     {
         foreach (var prefab in itemsList)
@@ -213,85 +190,15 @@ public class Inventory : MonoBehaviour
         return null; // Return null if no matching prefab is found
     }
 
-    public void UseItem(int itemID, Monster monster, Player user) // use item
-    {
-        if (!DoesPlayerHave(itemID)) // user doesn't have the item
-        {
-            
-            Debug.Log($"You don't have that item in your list.");
-            
-        }
-        else // user have item so use item
-        {
-            if (itemID == daggerPrefab.GetComponent<Item>().ID) // check item id with dagger id
-            {
-                daggerPrefab.GetComponent<Weapon>().Attack(monster);
-            }
-            else if (itemID == longSwordPrefab.GetComponent<Item>().ID)
-            {
-                longSwordPrefab.GetComponent<Weapon>().Attack(monster);
-            }
-            else if (itemID == dragonSwordPrefab.GetComponent<Item>().ID)
-            {
-                dragonSwordPrefab.GetComponent<Weapon>().Attack(monster);
-            }
-            else if(itemID == healPotionPrefab.GetComponent<Item>().ID)
-            {
-                healPotionPrefab.GetComponent<HealingPotion>().Heal(user);
-                RemoveItem(itemID);
-            }
-            else if (itemID == fireScrollPrefab.GetComponent<Item>().ID)
-            {
-                fireScrollPrefab.GetComponent<FireScroll>().Cast(monster);
-                RemoveItem(itemID);
-            }
-            else if (itemID == shieldScrollPrefab.GetComponent<Item>().ID)
-            {
-                shieldScrollPrefab.GetComponent<ShieldScroll>().Cast(user);
-                RemoveItem(itemID);
-            }
-            else
-            {
-                Debug.Log("It is not item in the itemsList");               
-            }
-        }
-    }
-
+    /// <summary>
+    /// Prints the contents of the inventory to the debug console.
+    /// Includes item names, IDs, and quantities.
+    /// </summary>
     public void DebugInventoryContents()
     {
-        /*
-        Debug.Log("Inventory Contents:");
-        if (itemQuantities.Count == 0)
-        {
-            Debug.Log("The Dic is currently empty.");
-            return;
-        }
-
-        // Check if the inventory has any items
-        if (inventory.Count == 0)
-        {
-            Debug.Log("The inventory is currently empty.");
-            return;
-        }
-        
-
-
-        // Show all keys and values in itemQuantities dictionary
-        if (itemQuantities.Count == 0)
-        {
-            Debug.Log("The itemQuantities dictionary is currently empty.");
-        }
-        else
-        {
-            Debug.Log("ItemQuantities dictionary contents:");
-            foreach (var kvp in itemQuantities)
-            {
-                Debug.Log($"Item ID: {kvp.Key}, Quantity: {kvp.Value}");
-            }
-        }
-        */
+        Debug.Log("*************Inventory contents*************");
         // Loop through each item in the inventory and print its details
-        foreach (var itemObject in inventory)
+        foreach (var itemObject in inventoryList)
         {
             Item item = itemObject.GetComponent<Item>();
 
@@ -306,11 +213,11 @@ public class Inventory : MonoBehaviour
                 if (item is Consumable && itemQuantities.ContainsKey(itemID))
                 {
                     int quantity = itemQuantities[itemID];
-                    Debug.LogError($"Consumable Item: {itemName} (ID: {itemID}), Quantity: {quantity}");
+                    Debug.Log($"Consumable Item: {itemName} (ID: {itemID}), Quantity: {quantity}");
                 }
                 else
                 {
-                    Debug.LogError($"Weapon Item: {itemName} (ID: {itemID}), Quantity: 1");
+                    Debug.Log($"Weapon Item: {itemName} (ID: {itemID}), Quantity: 1");
                 }
             }
             else
@@ -318,6 +225,7 @@ public class Inventory : MonoBehaviour
                 Debug.LogWarning("Found an item in the inventory without an Item component!");
             }
         }
+        Debug.Log("*********************************************");
     }
 }
 

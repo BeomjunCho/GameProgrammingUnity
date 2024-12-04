@@ -50,7 +50,5 @@ MonoBehaviour:
   healPotionPrefab: {fileID: 3820178206145508553, guid: c92fe7ca9ee38514d82641858ee43415, type: 3}
   fireScrollPrefab: {fileID: 2772863553825353870, guid: 48cd5f2a207067c4ca2438ed95f8cba6, type: 3}
   shieldScrollPrefab: {fileID: 6484232461167448535, guid: d1a7a15dfda89bc4fab0199deef28f0f, type: 3}
-  inventorySlotPrefab: {fileID: 4233868881781348706, guid: f020f0c8cbad01b4289688f6ec66c919, type: 3}
-  inventory: []
-  scrollView: {fileID: 0}
-  contentPanel: {fileID: 0}
+  HammerPrefab: {fileID: 7170803747956514846, guid: 3db2f5744fd5fa741af4d6917dc86425, type: 3}
+  inventoryList: []

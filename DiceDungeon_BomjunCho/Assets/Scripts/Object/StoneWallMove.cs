@@ -1,20 +1,31 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Handles the movement of a stone wall when the player enters its trigger.
+/// The wall moves upward a specified distance at a defined speed.
+/// </summary>
 public class StoneWallMove : MonoBehaviour
 {
 
     [SerializeField] private float _moveUpDistance; // Distance to move up
     [SerializeField] private float _moveSpeed;      // Speed of movement
     private Vector3 _originalPosition; // Original position 
-    private bool _isMoving = false;    // Check if the wall is already moving
+    private bool _isMoving = false;    // Check if the wall is moving
 
+    /// <summary>
+    /// Initializes the original position of the stone wall.
+    /// </summary>
     private void Start()
     {
         // Save the original position of the object
         _originalPosition = transform.position;
     }
 
+    /// <summary>
+    /// Detects when a collider enters the trigger zone and starts moving the wall if it's the player.
+    /// </summary>
+    /// <param name="other">The collider that entered the trigger zone.</param>
     private void OnTriggerEnter(Collider other)
     {
         // Check if the collider entering the trigger has the "Player" tag and stone wall is not moving
@@ -24,6 +35,10 @@ public class StoneWallMove : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Coroutine to move the stone wall upward to the target position over time.
+    /// </summary>
+    /// <returns>An enumerator for Unity's coroutine system.</returns>
     private IEnumerator MoveUp()
     {
         _isMoving = true;

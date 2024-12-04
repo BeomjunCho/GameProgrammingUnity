@@ -993,7 +993,6 @@ MonoBehaviour:
   StoneDoorWest: {fileID: 9060883461696652310}
   StoneDoorEast: {fileID: 4169376904340097354}
   RoomLight: {fileID: 8862906193155494911}
-  _playerInventory: {fileID: 0}
 --- !u!1 &5329143731115373192 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7916121457937820181, guid: 8708fc2d5386f9041a389956c8cf204e, type: 3}
