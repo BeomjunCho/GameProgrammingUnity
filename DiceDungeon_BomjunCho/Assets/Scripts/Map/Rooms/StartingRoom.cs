@@ -1,13 +1,31 @@
 ﻿using UnityEngine;
 
-//In this room user have 
+//Player starts game in this room.
 public class StartingRoom : Room
 {
-            
-    public override string ToString()
+
+    private void OnTriggerEnter(Collider other)
     {
-        return "Starting Room"; //representation
+        if (other.CompareTag("Player"))
+        {
+            Debug.Log("Player Entered Starting Room.");
+            RoomLight.SetActive(true);
+            Debug.Log("Light on");
+        }
     }
+
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            RoomLight.SetActive(false);
+            Debug.Log("Light off");
+            Debug.Log("Player is leaving from Starting Room.");
+        }
+    }
+
+    /*
     public override void OnRoomEntered(Player user)
     {
         Debug.Log("You entered Starting Room.");
@@ -27,7 +45,7 @@ public class StartingRoom : Room
             Debug.Log("You are searching Starting Room.");
             Debug.Log("Nothing is here.");
         }
-        user.ShowPlayerState();
+        //user.ShowPlayerState();
         Debug.Log("Do you want to leave this room?\n(Enter anykey)");
 
     }
@@ -37,6 +55,7 @@ public class StartingRoom : Room
         Debug.Log("You are leaving from Starting Room");
         IsVisited = true; // Mark the room as visited
     }
+    */
 }
 
 

@@ -2,16 +2,9 @@
 
 public class DragonSword : Weapon
 {
-    public override string ToString()
-    {
-        return "DragonSword"; //representation
-    }
 
-    public DragonSword()
-    {
-        ID = 4;
-        maxDamage = 20;
-    }
+    private static readonly int _id = 3;  // Unique ID for the DragonSword class
+    public override int ID => _id;        // Implements the ID property in Item
     public override int maxDamage { get; set; }
 
     public override void Attack(Monster monster) // attack monster for random damage 

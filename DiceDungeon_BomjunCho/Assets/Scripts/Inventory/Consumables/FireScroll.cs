@@ -2,16 +2,8 @@
 
 public class FireScroll : Consumable
 {
-    public override string ToString()
-    {
-        return "FireScroll"; // representation
-    }
-
-    public FireScroll()
-    {
-        ID = 5;
-        effect = 30; // Dice roll effect for damage amount
-    }
+    private static readonly int _id = 5;  // Unique ID for the FireScroll class
+    public override int ID => _id;        // Implements the ID property in Item
     public override int effect { get; set; }
 
     public void Cast(Monster monster) // Casts fire spell to damage monster

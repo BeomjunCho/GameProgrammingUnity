@@ -1,51 +1,78 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 
-internal class GameController : MonoBehaviour
+public class GameController : MonoBehaviour
 {
-    public void ProgramStart()
+    // It will creates map
+    [SerializeField] private Map _gameMapPrefab;
+    // It will creates PlayerController
+    [SerializeField] private PlayerController _playerControllerPrefab;
+    // It will creates Inventory
+    [SerializeField] private Inventory _inventoryPrefab;
+
+    private Map _gameMap;
+    private PlayerController _playerController;
+    private Inventory _inventory;
+    private Interaction _interaction;
+    public Inventory InventoryPrefab { get => _inventoryPrefab; set => _inventoryPrefab = value; }
+
+
+    public void Start()
     {
-        //instance
-        Player user = new Player();
-        StartingRoom emptyRoom = new StartingRoom();
+        Debug.Log("GameManager Start");
+        // zero our manager position
+        transform.position = Vector3.zero;
 
-        //object
-        Room currentRoom;
+        // create an instance of the map manager
+        InstantiatePrefabs();
+        // create the map
+        SetUpInstances();
+        // Start game
+        StartGame();
+    }
 
-        //Main game loop
-        void DiceDungeonGame(Map map)
-        {
-            while (user.hp > 0)
-            {
-                currentRoom = map.currentRoom;
-                    
-                if (currentRoom == map.lastRoom && user.hp > 0)
-                {
-                    break;
-                }
-                else if (user.hp <= 0)
-                {
-                    break;
-                }
-            }
-        }
-
-        //------------------Game Start---------------------
-
-        Map map = new Map(); // execute intro() and catch the returned map instance
-        if (map != null) // Check if map is null
-        {
-            currentRoom = map.currentRoom;
-            DiceDungeonGame(map); // Main game loop
-        }
-        else
-        {
-            Debug.Log("Failed to initialize map. Exiting the game.");
-        }
-
+    private void StartGame()
+    {
+        // Intro
+        Debug.Log("Hello, World!");
 
     }
 
+    void InstantiatePrefabs()
+    {
+        // Instantiate Game map
+        _gameMap = Instantiate(_gameMapPrefab, transform);
+        _gameMap.transform.position = Vector3.zero;
+        // Instantiate Player controller
+        _playerController = Instantiate(_playerControllerPrefab, transform);
+        _playerController.transform.position = new Vector3(-14, -15, 2);
+        // Instantiate Inventory       
+        _inventory = Instantiate(InventoryPrefab, transform);
+        _inventory.transform.position = Vector3.zero;
 
+    }
+
+    void SetUpInstances()
+    {
+        // Create rooms
+        _gameMap.CreateMap(ref _inventory);
+        // Set up Player
+        _playerController.SetUp(ref _inventory);
+        // Get the Interaction component from the instantiated PlayerController instance
+        _interaction = _playerController.GetComponent<Interaction>();
+
+        if (_interaction != null)
+        {
+            _interaction.SetUp(ref _inventory);
+        }
+        else
+        {
+            Debug.LogWarning("Interaction component not found on PlayerControllerPrefab instance.");
+        }
+        
+        // Set up Inventory
+        _inventory.SetUp();
+    }
 }
 
 

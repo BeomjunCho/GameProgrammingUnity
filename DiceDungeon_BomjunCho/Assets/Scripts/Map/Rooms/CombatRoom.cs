@@ -1,45 +1,73 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
-//In this room, user fights with normal monster
+//In this room, Player fights with normal monster
 public class CombatRoom : Room
 {
-    public override string ToString()
+    // Array for random monster spawn
+    [SerializeField] private Monster[] NormalMonsterPrefab;
+    // Game object for spawning position information
+    [SerializeField] private Transform MonsterSpawnPoint;
+
+    private void Start()
     {
-        return "Combat Room"; //representation
+        // Instantiate random monster from array
+        Monster NormalMonsterInstance = Instantiate(NormalMonsterPrefab[Random.Range(0, NormalMonsterPrefab.Length)], transform);
+        // Move it to spawn point
+        NormalMonsterInstance.transform.position = MonsterSpawnPoint.position;
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            Debug.Log("Player Entered Combat Room.");
+            RoomLight.SetActive(true);
+            Debug.Log("Light on");
+        }
+    }
+
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            RoomLight.SetActive(false);
+            Debug.Log("Light off");
+            Debug.Log("Player is leaving from Combat Room.");
+        }
+    }
+
+
+
+    /*
     public override void OnRoomEntered(Player user)
     {
+        Debug.Log("You entered Combat Room.");
         if (!IsVisited) // is this room visited?
         {
-            Debug.Log("You entered Combat Room.");
             Debug.Log("You’ve encountered a fierce Minotaur. Prepare for battle!\n(Enter anykey)");
-            Console.ReadLine();
             NormalMonster monster = new NormalMonster();
             DieRoller dieRoller = new DieRoller();
             dieRoller.GamePlayLoop(user, monster); // dice roll battle starts
         }
         else
         {
-            Debug.Log("You entered Combat Room.");
             Debug.Log("You have returned to the Combat Room. There is a dead monster.");
         }
     }
 
     public override void OnRoomSearched(Player user)
     {
+        Debug.Log("You are searching Combat Room.");
         if (!IsVisited) // is this room visited?
         {
-            Debug.Log("You are searching Combat Room.");
             Debug.Log("You found one item from dead monster.");
-            user.inventory.AddRndItem();
         }
         else
         {
-            Debug.Log("You are searching Combat Room.");
             Debug.Log("There is nothing left to search in this room.");
         }
-        user.ShowPlayerState();
+        //user.ShowPlayerState();
     }
 
     public override void OnRoomExit(Player user)
@@ -47,6 +75,7 @@ public class CombatRoom : Room
         Debug.Log("You are leaving from Combat Room");
         IsVisited = true; // Mark the room as visited
     }
+    */
 }
 
 

@@ -2,15 +2,10 @@
 
 public class HealingPotion : Consumable
 {
-    public override string ToString()
-    {
-        return "HealingPotion"; //representation
-    }
-    public HealingPotion()
-    {
-        ID = 1;
-        effect = 6;
-    }
+
+    private static readonly int _id = 4;  // Unique ID for the Dagger class
+    public override int ID => _id;        // Implements the ID property in Item
+
     public override int effect { get; set; }
     public void Heal(Player user) // heal user until 10 hp, without exceeding it
     {

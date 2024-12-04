@@ -2,16 +2,8 @@
 
 public class ShieldScroll : Consumable
 {
-    public override string ToString()
-    {
-        return "ShieldScroll"; // representation
-    }
-
-    public ShieldScroll()
-    {
-        ID = 6;
-        effect = 25; // Dice roll effect for defense boost amount
-    }
+    private static readonly int _id = 6;  // Unique ID for the Shield class
+    public override int ID => _id;        // Implements the ID property in Item
     public override int effect { get; set; }
 
     public void Cast(Player user) // Grants temporary defense boost
