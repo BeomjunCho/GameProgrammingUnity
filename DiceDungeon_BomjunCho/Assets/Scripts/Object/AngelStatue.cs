@@ -7,6 +7,7 @@ using UnityEngine;
 public class AngelStatue : MonoBehaviour
 {
     [SerializeField] private GameObject _portion;
+    
     private bool _isPrayed = false; // Boolean for checking if player already pray
     private int _portionAmount = 2;
 
@@ -17,6 +18,7 @@ public class AngelStatue : MonoBehaviour
     public void HealPlayer()
     {
         if (_isPrayed) return; // Prevent re-Praying
+        AudioManager.Instance.PlaySfx(AudioManager.Instance.sfxList[(int)SfxTrack.Pray], 1.0f);
         // spawn portions for corresponding amount
         for (int i = 0; i < _portionAmount; i++) 
         {

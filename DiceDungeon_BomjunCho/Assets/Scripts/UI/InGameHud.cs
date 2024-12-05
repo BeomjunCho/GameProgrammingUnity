@@ -67,7 +67,7 @@ public class InGameHud : MonoBehaviour
     {
         AudioManager.Instance.StopMusic(); // Stop previous music
         AudioManager.Instance.PlayMusic(AudioManager.Instance.musicList[(int)MusicTrack.InGameMusic], 0.5f); // Play In game music
-        //AudioManager.Instance.PlayAmbience(AudioManager.Instance.ambience.clip, 0.5f);
+        AudioManager.Instance.PlayAmbience(AudioManager.Instance.ambience.clip, 1f);
         Cursor.lockState = CursorLockMode.Locked; // lock cursor
         Cursor.visible = false; //hide cursor
     }

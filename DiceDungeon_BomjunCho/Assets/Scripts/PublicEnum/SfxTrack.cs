@@ -13,4 +13,10 @@ public enum SfxTrack
    MonsterDead = 7,
    ChestOpen = 8,
    PlayerEscape = 9,
+   BookSummon = 10,
+   Pray = 11,
+   TradeFail = 12,
+   TradeSucceed = 13,
+   WinMusic = 14,
+   GameOver = 15,
 }

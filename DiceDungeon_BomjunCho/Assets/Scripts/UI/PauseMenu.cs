@@ -27,6 +27,7 @@ public class PauseMenu : MonoBehaviour
     /// </summary>
     private void OnEnable()
     {
+        AudioManager.Instance.StopAmbience();    // Stop the currently playing Amb.
         AudioManager.Instance.StopMusic();       // Stop the currently playing music.
         Cursor.lockState = CursorLockMode.None;  // Unlock the cursor for interaction.
         Cursor.visible = true;                   // Make the cursor visible.

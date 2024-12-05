@@ -14,8 +14,8 @@ public class Chest : MonoBehaviour
     /// </summary>
     public void OpenChest()
     {
-        AudioManager.Instance.PlaySfx(AudioManager.Instance.sfxList[(int)SfxTrack.ChestOpen], 1.0f);
         if (_isOpen) return; // Prevent re-opening
+        AudioManager.Instance.PlaySfx(AudioManager.Instance.sfxList[(int)SfxTrack.ChestOpen], 1.0f);
 
         // Rotate the chest lid by 90 degrees on the z-axis
         _chestLid.localRotation = Quaternion.Euler(_chestLid.localRotation.x, _chestLid.localRotation.y, -90);

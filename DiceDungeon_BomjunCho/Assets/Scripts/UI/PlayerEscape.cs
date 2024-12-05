@@ -45,13 +45,14 @@ public class PlayerEscape : MonoBehaviour
     IEnumerator EscapeSequence()
     {
         AudioManager.Instance.StopMusic();
+        AudioManager.Instance.StopAmbience();
         AudioManager.Instance.PlaySfx(AudioManager.Instance.sfxList[(int)SfxTrack.PlayerEscape], 1.0f);
         yield return new WaitForSeconds(22);
 
         _EscapeImage.SetActive(true); // Show the escape image.
 
         yield return new WaitForSeconds(5); // Wait for 5 seconds.
-
+        AudioManager.Instance.PlaySfx(AudioManager.Instance.sfxList[(int)SfxTrack.WinMusic], 6.0f);
         _EscapeImage.SetActive(false); // Hide the escape image.
         _EndScreen.SetActive(true); // Show the end screen.
     }

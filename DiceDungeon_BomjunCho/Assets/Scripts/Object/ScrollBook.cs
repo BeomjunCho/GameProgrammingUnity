@@ -17,6 +17,8 @@ public class ScrollBook : MonoBehaviour
     {
         Destroy(gameObject); // Destroy this game object (the book).
 
+        AudioManager.Instance.PlaySfx(AudioManager.Instance.sfxList[(int)SfxTrack.BookSummon], 1.0f);
+
         // Check if the _scrolls array is not null, then spawn and throw a random scroll.
         if (_scrolls != null)
         {

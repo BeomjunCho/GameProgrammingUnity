@@ -55,6 +55,8 @@ public class TradeDemon : MonoBehaviour
     /// </summary>
     IEnumerator TradeItem()
     {
+        AudioManager.Instance.PlaySfx(AudioManager.Instance.sfxList[(int)SfxTrack.TradeSucceed], 1.0f);
+
         // Display success message.
         _InGameTextPanel.SetActive(true);
         _inGameText.text = "You have items I need! Thank you for trading!";
@@ -89,6 +91,7 @@ public class TradeDemon : MonoBehaviour
     /// </summary>
     IEnumerator TradeFail()
     {
+        AudioManager.Instance.PlaySfx(AudioManager.Instance.sfxList[(int)SfxTrack.TradeFail], 1.0f);
         // Display failure message.
         _InGameTextPanel.SetActive(true);
         _inGameText.text = "You don't have items I need. I need 1 dagger and 1 fire scroll" +

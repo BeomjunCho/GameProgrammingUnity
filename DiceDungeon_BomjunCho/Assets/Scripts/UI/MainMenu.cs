@@ -17,6 +17,7 @@ public class MainMenu : MonoBehaviour
     {
         if (AudioManager.Instance.musicList.Length > (int)MusicTrack.MainMenuMusic)
         {
+            AudioManager.Instance.StopAmbience();
             AudioManager.Instance.PlayMusic(AudioManager.Instance.musicList[(int)MusicTrack.MainMenuMusic], 1.5f);
         }
     }
