@@ -33,7 +33,7 @@ public class ShieldScroll : Consumable
     /// </summary>
     public void Cast() // Grants temporary defense boost
     {
-        AudioManager.Instance.PlaySfx(AudioManager.Instance.sfxList[(int)SfxTrack.ShieldScroll], 3.0f);
+        AudioManager.Instance.PlaySfx(AudioManager.Instance.sfxList[(int)SfxTrack.ShieldScroll], 1.0f);
         int result = randomNumber(effect);
         Debug.Log(effect);
         _player.shield += result; 

@@ -1673,6 +1673,7 @@ GameObject:
   - component: {fileID: 57999449206420349}
   - component: {fileID: 1782847902204872816}
   - component: {fileID: 1895533455435396674}
+  - component: {fileID: 6360633013472655484}
   m_Layer: 0
   m_Name: NightmareDragon
   m_TagString: Monster
@@ -1730,6 +1731,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bee56d78d08d5264cba0251ba270b2f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &6360633013472655484
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5965220170729036282}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d44a18fbb4c18cb40b8732baf53d96fd, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &6135382145321272631
 GameObject:
   m_ObjectHideFlags: 0

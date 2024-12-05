@@ -98,7 +98,7 @@ public class BattleHud : MonoBehaviour
     private void OnEnable()
     {
         AudioManager.Instance.StopMusic();
-        AudioManager.Instance.PlayMusic(AudioManager.Instance.musicList[(int)MusicTrack.BattleMusic], 0.2f);
+        AudioManager.Instance.PlayMusic(AudioManager.Instance.musicList[(int)MusicTrack.BattleMusic], 0.3f);
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;

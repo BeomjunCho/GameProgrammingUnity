@@ -13,6 +13,8 @@ public class AudioManager : Singleton<AudioManager>
     public AudioClip[] musicList; // A list of available music tracks.
     public AudioClip[] sfxList;
 
+    private float originalMusicVolume; // To store the original music volume.
+
     /// <summary>
     /// Plays a 3D sound effect at a given position in the world.
     /// The sound is spatialized and attached to a specified transform.
@@ -28,6 +30,7 @@ public class AudioManager : Singleton<AudioManager>
         AudioSource audioSource = go.AddComponent<AudioSource>();
         audioSource.clip = clip;
         audioSource.volume = volume;
+        audioSource.spatialBlend = 1.0f; // Ensures it's fully spatialized
         audioSource.Play();
 
         Destroy(go, clip.length);
@@ -41,24 +44,30 @@ public class AudioManager : Singleton<AudioManager>
     /// <param name="volume">The volume of the sound effect.</param>
     public void PlaySfx(AudioClip clip, float volume)
     {
+        // Store the original music volume and reduce it
+        originalMusicVolume = music.volume;
+        music.volume = Mathf.Max(0, music.volume - 0.1f);
+
         sfx.clip = clip;
         sfx.volume = volume;
         sfx.Play();
-        StartCoroutine(StopSfxAfterDuration(clip.length));
+
+        // Restore music volume after SFX duration
+        StartCoroutine(StopSfxAndRestoreMusicVolume(clip.length));
     }
 
     /// <summary>
-    /// Stops the sound effect after its duration.
+    /// Coroutine to restore the music volume after the SFX finishes.
     /// </summary>
-    /// <param name="duration">The length of the sound effect clip.</param>
-    /// <returns>IEnumerator for coroutine.</returns>
-    private IEnumerator StopSfxAfterDuration(float duration)
+    private IEnumerator StopSfxAndRestoreMusicVolume(float duration)
     {
         yield return new WaitForSeconds(duration);
         if (sfx.isPlaying)
         {
             sfx.Stop();
         }
+        // Restore the original music volume
+        music.volume = originalMusicVolume;
     }
 
     /// <summary>

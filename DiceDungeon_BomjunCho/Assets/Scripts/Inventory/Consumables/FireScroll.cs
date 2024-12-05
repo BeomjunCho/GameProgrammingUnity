@@ -27,7 +27,7 @@ public class FireScroll : Consumable
     /// </summary>
     public void Cast() // Casts fire spell to damage monster
     {
-        AudioManager.Instance.PlaySfx(AudioManager.Instance.sfxList[(int)SfxTrack.FireScroll], 3.0f);
+        AudioManager.Instance.PlaySfx(AudioManager.Instance.sfxList[(int)SfxTrack.FireScroll], 1.0f);
         int result = randomNumber(effect);
         Debug.Log(effect);
         _monster.cur_hp -= result;

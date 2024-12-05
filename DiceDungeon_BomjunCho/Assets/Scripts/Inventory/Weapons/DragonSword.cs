@@ -36,7 +36,7 @@ public class DragonSword : Weapon
 
     public override void Attack() // attack monster for random damage 
     {
-        AudioManager.Instance.PlaySfx(AudioManager.Instance.sfxList[(int)SfxTrack.DragonSword], 3.0f);
+        AudioManager.Instance.PlaySfx(AudioManager.Instance.sfxList[(int)SfxTrack.DragonSword], 1.0f);
         //int result = randomNumber(maxDamage);
         int result = randomNumber(maxDamage);
         _monster.cur_hp -= result;

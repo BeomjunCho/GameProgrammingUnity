@@ -9,6 +9,7 @@ public class BossMonster : Monster
     [SerializeField] private GameObject _HammerPrefab;
 
     private Player _player;
+    private Animator _animator;
     public override int max_hp { get; set; }
     public override int cur_hp { get; set; }
     public override int damage { get; set; }
@@ -19,6 +20,7 @@ public class BossMonster : Monster
     public void SetUp()
     {
         _player = Object.FindAnyObjectByType<Player>();
+        _animator = GetComponent<Animator>(); // Get the Animator component
         max_hp = 30;
         cur_hp = 30;
         damage = 9;
@@ -31,40 +33,46 @@ public class BossMonster : Monster
     /// <returns>A string summarizing the result of the attack.</returns>
     public override string Attack()
     {
-        AudioManager.Instance.PlaySfx(AudioManager.Instance.sfxList[(int)SfxTrack.MonsterAttack], 3.0f);
+        AudioManager.Instance.PlaySfx(AudioManager.Instance.sfxList[(int)SfxTrack.MonsterAttack], 1.0f);
         string attackResult = "";
-        damage = Random.Range(0, damage);
 
-        if (damage == 0)
+        int attackDamage = Random.Range(0, damage); // Use a local variable for random damage
+
+        if (_animator != null)
         {
-            attackResult = "The boss monster attacked, but you dodged!";
+            _animator.SetTrigger("Attack"); // Trigger the attack animation
+        }
+
+        if (attackDamage == 0)
+        {
+            attackResult = "Dragon King attacked, but you dodged!";
         }
         else
         {
             if (_player.shield == 0) // if the player doesn't have a shield, deal damage to HP
             {
-                _player.curHP -= damage;
-                attackResult = $"Dice number was {damage}!\nMonster attacked you. You lost {damage} HP points.";
+                _player.curHP -= attackDamage;
+                attackResult = $"Dice number was {attackDamage}!\nDragon King attacked you. You lost {attackDamage} HP points.";
             }
             else if (_player.shield > 0) // if the player has a shield, deal damage to the shield
             {
                 int shieldBeforeDamage = _player.shield; // Store shield amount before damage
-                _player.shield -= damage;
+                _player.shield -= attackDamage;
 
                 if (_player.shield < 0) // when the shield goes below 0
                 {
                     _player.curHP += _player.shield; // carry over the remaining negative value to HP
-                    attackResult = $"Dice number was {damage}!\nThe shield absorbed part of the attack, taking {shieldBeforeDamage} damage, but some still got through." +
+                    attackResult = $"Dice number was {attackDamage}!\nThe shield absorbed part of the attack, taking {shieldBeforeDamage} damage, but some still got through." +
                         $"\nShield spell is broken!";
                     _player.shield = 0; // Reset shield to 0
                 }
                 else // When the shield absorbs all the damage
                 {
-                    attackResult = $"Dice number was {damage}!\nMonster attacked you but it was blocked by your shield! Shield took {damage} damage.";
+                    attackResult = $"Dice number was {attackDamage}!\nDragon King attacked you but it was blocked by your shield! Shield took {attackDamage} damage.";
                 }
             }
         }
-        
+
         return attackResult; // Return the result to be used elsewhere
     }
 
@@ -74,7 +82,7 @@ public class BossMonster : Monster
     /// </summary>
     public void BossMonsterDead()
     {
-        AudioManager.Instance.PlaySfx(AudioManager.Instance.sfxList[(int)SfxTrack.MonsterDead], 3.0f);
+        AudioManager.Instance.PlaySfx(AudioManager.Instance.sfxList[(int)SfxTrack.MonsterDead], 1.0f);
         Instantiate(_HammerPrefab, this.transform.position + new Vector3(0, 5, 0), Quaternion.identity);
         this.gameObject.SetActive(false);
     }

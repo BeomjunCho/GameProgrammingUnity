@@ -28,7 +28,7 @@ public class HealingPotion : Consumable
     /// </summary>
     public void Heal()
     {
-        AudioManager.Instance.PlaySfx(AudioManager.Instance.sfxList[(int)SfxTrack.Potion], 3.0f);
+        AudioManager.Instance.PlaySfx(AudioManager.Instance.sfxList[(int)SfxTrack.Potion], 1.0f);
         int result = randomNumber(effect);
         int healAmount = Mathf.Min(result, _player.maxHp - _player.curHP); // Calculate the actual heal amount.
 

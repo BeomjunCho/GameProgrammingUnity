@@ -41,7 +41,7 @@ public class Dagger : Weapon
     /// </summary>
     public override void Attack() // attack monster for random damage 
     {
-        AudioManager.Instance.PlaySfx(AudioManager.Instance.sfxList[(int)SfxTrack.Dagger], 3.0f);
+        AudioManager.Instance.PlaySfx(AudioManager.Instance.sfxList[(int)SfxTrack.Dagger], 1.0f);
         int result = randomNumber(maxDamage);
         _monster.cur_hp -= result;
         _dynamicText = $"Dice number was {result}!\nYou attacked the monster with Dagger for {result} damage.";    
