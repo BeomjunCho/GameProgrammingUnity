@@ -10,6 +10,7 @@ public class PlayerEscape : MonoBehaviour
     [SerializeField] private GameObject _EscapeImage; // UI image displayed during the escape sequence.
     [SerializeField] private GameObject _EndScreen;   // UI screen displayed after the escape sequence ends.
     [SerializeField] private UIManager _uiSystem;     // Reference to the UIManager for managing UI transitions.
+    [SerializeField] private GameGlobal _gameGlobal; // Reference to the Game global to reset all child when player goes back to menu scene.
 
     /// <summary>
     /// Returns the player to the main menu.
@@ -55,5 +56,12 @@ public class PlayerEscape : MonoBehaviour
         AudioManager.Instance.PlaySfx(AudioManager.Instance.sfxList[(int)SfxTrack.WinMusic], 6.0f);
         _EscapeImage.SetActive(false); // Hide the escape image.
         _EndScreen.SetActive(true); // Show the end screen.
+    }
+
+    public void BackToMainMenu()
+    {
+        _gameGlobal.ResetGame();
+        
+        UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu"); // Load the in-game scene
     }
 }

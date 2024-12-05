@@ -70,6 +70,12 @@ public class InGameHud : MonoBehaviour
         AudioManager.Instance.PlayAmbience(AudioManager.Instance.ambience.clip, 1f);
         Cursor.lockState = CursorLockMode.Locked; // lock cursor
         Cursor.visible = false; //hide cursor
+
+        // Prevent to open inventory screen after battle 
+        if (_inventoryScreen.activeSelf)
+        {
+            _inventoryScreen.SetActive(false);
+        }
     }
 
     /// <summary>
@@ -90,9 +96,12 @@ public class InGameHud : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.E)) // Toggle inventory screen in game hud
         {
-            // lock player camera and show cursor
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
+            if (!_inventoryScreen.activeSelf)
+            {
+                // lock player camera and show cursor
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
 
             //refresh inventory ui
             _inventoryUI.RefreshInventoryUI();
@@ -105,15 +114,20 @@ public class InGameHud : MonoBehaviour
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
             }
-
             //toggle player controller can move boolean
-            if (_playerController.canMove == true)
+            if (!_inventoryScreen.activeSelf)
             {
-                _playerController.canMove = false;
+                if (_playerController.canMove == false)
+                {
+                    _playerController.canMove = true;
+                }
             }
-            else if (_playerController.canMove == false)
+            if (_inventoryScreen.activeSelf)
             {
-                _playerController.canMove = true;
+                if (_playerController.canMove == true)
+                {
+                    _playerController.canMove = false;
+                }
             }
         }
 
